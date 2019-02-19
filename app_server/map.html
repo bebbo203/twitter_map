@@ -1,0 +1,77 @@
+<html>
+  <head>
+    <meta charset='utf-8' />
+    <title>Points on a map</title>
+    <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.css' rel='stylesheet' />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+      }
+
+      .marker {
+        background-image: url('https://docs.mapbox.com/help/demos/custom-markers-gl-js/mapbox-icon.png');
+        background-size: cover;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div id='map'></div>
+    <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYmViYm8yMDMiLCJhIjoiY2pzOWNxZTFjMWZ5bjN5bzNoY3l2azR2diJ9.NB9mBOvbuV3127OGeyV0_w'; // replace this with your access token
+    var map = new mapboxgl.Map({
+      container: 'map',
+      style: 'mapbox://styles/bebbo203/cjsa7rpxr0u0c1fp4vzou6r9g', // replace this with your style URL
+      center: [13.21, 41.38],
+      zoom: 4
+    });
+    // code from the next step will go here
+    
+
+
+    fetch('/map/coords').then(response => {
+        return response.json();
+    }).then(data => {
+
+        console.log(data)
+        latlng = data      
+        for(var i=0;i<latlng.length;i++)
+        {
+            var el = document.createElement('div');
+            el.className = 'marker';
+            
+            console.log("_______"+latlng[i].coords);
+            var actual = latlng[i].coords.coordinates;
+            console.log(actual[0]+"   "+actual[1]);
+            if(actual[0] == undefined || actual[1] == undefined) 
+            {
+              console.log("CONTINUA");
+              continue;
+            }
+            var v1 = new mapboxgl.LngLat(actual[0], actual[1]);
+            var popup = new mapboxgl.Popup({ offset: 25 }).setText(latlng[i].text);
+            new mapboxgl.Marker(el).setLngLat(v1).setPopup(popup).addTo(map);
+
+        }
+        
+        
+
+    });
+
+
+    </script>
+  </body>
+</html>

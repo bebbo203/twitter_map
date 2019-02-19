@@ -1,13 +1,19 @@
 var https = require('https');
+var http = require('http');
 var fs = require('fs');
 var express = require('express');
 var bodyParser = require('body-parser')
 var twitter = require('twitter');
+var request = require('request');
 var app = express();
 
 app.use( bodyParser.json());       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({extended: true})); 
 
+
+var locations = []
+var coords = []
+var tweet_print = []
 
 var client = new twitter({
     consumer_key: 'fpkpDpNcr3zEdppgrDxwTQ',
@@ -18,17 +24,22 @@ var client = new twitter({
 
 
 
-app.get('/',function(req, res){
+app.get('/',function(req, res)
+{
 
     res.writeHead(200, { "Content-Type": "text/html" });
     fs.createReadStream("tweet.html", "UTF-8").pipe(res);
     
 });
 
-app.post('/click',function(req, res){
+app.post('/click',function(req, res)
+{
 
     console.log("IN");
 
+    locations = []
+    coords = []
+    tweet_print = []
     var text_form = req.body.dname;
 
     var params = {
@@ -46,20 +57,161 @@ app.post('/click',function(req, res){
             for(var i=0; i<parsed_tweets.statuses.length; i++)
             {
                 var tweet = parsed_tweets.statuses[i];
-                console.log(tweet.user.location);
                 console.log(tweet.coordinates);
-                console.log("++++++++++++++++++");
+
+                if(tweet.coordinates != null) 
+                {
+                    coords.push(tweet.coordinates);
+                    
+                    tweet_print.push(tweet.text);
+                    
+                    console.log(tweet.text);
+                    console.log(tweet.coordinates);
+                    console.log("++++++++");
+                    
+                }
+                else
+                {
+                    if(tweet.user.location != null || tweet.user.location != '') 
+                    {
+                        locations.push(tweet.user.location);
+                    }
+
+                }
+
             }
+
+            console.log(coords);
+            res.redirect("/map");
         }
         else
         {
-            console.log("ERROR: "+error);
+            console.log("ERROR SEARCHING TWEET: "+error);
         }
     });
 
-    res.redirect("/");
+    
 
 });
+
+app.get('/map', function(req, res)
+{
+    res.writeHead(200, { "Content-Type": "text/html" });
+    fs.createReadStream("map.html", "UTF-8").pipe(res);
+});
+
+app.get('/map/coords', function(req, res)
+{
+   var data = '';
+   var promises = [];
+   var ret = []
+
+
+   for(var i=0;i<coords.length; i++)
+   {
+       var obj = {
+           "coords": coords[i],
+           "text": tweet_print[i]
+       }
+
+       ret.push(obj);
+   }
+   console.log("locations length: "+locations.length);
+
+
+   res.json(ret);
+   /*for(var i=0;i<locations.length; i++)
+   {
+        var p =  new Promise( (resolve, reject) => {
+
+            http.get('http://127.0.0.1:8081/get_location?city_tag='+encodeURI(locations[i]), (resp) => {
+
+            resp.on('data', (chunk) => {
+                data += chunk;
+            });
+
+        // The whole response has been received. Print out the result.
+            resp.on('end', () => {
+                console.log("L:"+i+"= "+locations[i]+"==>"+data);
+                resolve(data);
+                data="";
+            });
+
+
+            }).on("error", (err) => {
+                resolve("");
+            });
+
+
+
+        });
+
+        promises.push(p);
+   }
+
+    console.log(Promise.all(promises).then(values => {
+
+        for(var i=0;i<values.length;i++)
+        {
+            console.log("I: "+i)
+            coords.push(data);
+        }
+
+        console.log("RISOLTEEEE");
+        res.json(JSON.stringify(coords));
+
+   }));*/
+
+   
+
+
+   
+
+});
+
+//Returns a JSON array with the coordinates of the city in param city_tag
+app.get('/get_location', function(req, res)
+{
+
+    var city_tag = req.param("city_tag");
+    var access_token_map = 'pk.eyJ1IjoiYmViYm8yMDMiLCJhIjoiY2pzOWNxZTFjMWZ5bjN5bzNoY3l2azR2diJ9.NB9mBOvbuV3127OGeyV0_w';
+    var url = 'https://api.mapbox.com/geocoding/v5/mapbox.places/' + encodeURI(city_tag) +'.json?access_token='+access_token_map;
+    var data = '';
+
+    console.log(city_tag);
+
+    https.get(url, (resp) => {
+       
+        data = "";
+    // A chunk of data has been recieved.
+        resp.on('data', (chunk) => {
+            data += chunk;
+        });
+
+    // The whole response has been received. Print out the result.
+        resp.on('end', () => {
+            var query_loc = JSON.parse(data);
+            
+            //console.log("QUERY_LOC: "+JSON.stringify(query_loc));
+            if(query_loc.message == "Not Found" || query_loc.message == "Not Authorized - No Token" || query_loc.features.length == 0)
+                res.status(500); 
+            else 
+            {
+                console.log("RISOLTO");
+                res.send(query_loc.features[0].center);
+            }
+            
+        });
+
+    }).on("error", (err) => {
+        console.log("Error: " + err.message);
+    });
+
+});
+
+
+
+
 
 
 app.listen(8081);
