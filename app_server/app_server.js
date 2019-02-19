@@ -32,7 +32,7 @@ app.get('/',function(req, res)
     
 });
 
-app.post('/click',function(req, res)
+app.get('/click',function(req, res)
 {
 
     console.log("IN");
@@ -40,7 +40,13 @@ app.post('/click',function(req, res)
     locations = []
     coords = []
     tweet_print = []
-    var text_form = req.body.dname;
+    var param = req.param("chat_param");
+    if(param != null)
+        text_form = param;
+    else
+        text_form = req.body.dname;
+
+    console.log(text_form);
 
     var params = {
         q: '%23'+text_form,
@@ -82,11 +88,15 @@ app.post('/click',function(req, res)
             }
 
             console.log(coords);
-            res.redirect("/map");
+            if(param==null)
+                res.redirect("/map");
+            else
+                res.send(JSON.stringify(tweet_print));
         }
         else
         {
             console.log("ERROR SEARCHING TWEET: "+error);
+            res.send(error);
         }
     });
 
@@ -120,52 +130,7 @@ app.get('/map/coords', function(req, res)
 
 
    res.json(ret);
-   /*for(var i=0;i<locations.length; i++)
-   {
-        var p =  new Promise( (resolve, reject) => {
-
-            http.get('http://127.0.0.1:8081/get_location?city_tag='+encodeURI(locations[i]), (resp) => {
-
-            resp.on('data', (chunk) => {
-                data += chunk;
-            });
-
-        // The whole response has been received. Print out the result.
-            resp.on('end', () => {
-                console.log("L:"+i+"= "+locations[i]+"==>"+data);
-                resolve(data);
-                data="";
-            });
-
-
-            }).on("error", (err) => {
-                resolve("");
-            });
-
-
-
-        });
-
-        promises.push(p);
-   }
-
-    console.log(Promise.all(promises).then(values => {
-
-        for(var i=0;i<values.length;i++)
-        {
-            console.log("I: "+i)
-            coords.push(data);
-        }
-
-        console.log("RISOLTEEEE");
-        res.json(JSON.stringify(coords));
-
-   }));*/
-
-   
-
-
-   
+  
 
 });
 

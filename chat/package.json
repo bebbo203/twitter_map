@@ -1,0 +1,15 @@
+{
+    "name": "twitter_chat",
+    "version": "1.0.0",
+    "description": "",
+    "dependencies": {
+        "express": "latest",
+        "socket.io": "latest",
+        "jade": "latest",
+        "nodemon": "latest",
+        "http": "latest"
+    },
+    "scripts": {
+        "start": "npm install && nodemon index.js"
+    }
+}

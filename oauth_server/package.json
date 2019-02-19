@@ -2,7 +2,7 @@
   "name": "twitter-oauth",
   "version": "1.0.0",
   "description": "",
-  "main": "oauth.js",
+  "main": "oauth_twitter.js",
   "dependencies": {
     "body-parser": "^1.15.2",
     "cookie-parser": "^1.4.3",
@@ -16,7 +16,5 @@
   "devDependencies": {},
   "scripts": {
     "start": "node oauth_twitter.js"
-  },
-  "author": "Juan Gonzalez <juan@kukenan.tech>",
-  "license": "ISC"
+  }
 }

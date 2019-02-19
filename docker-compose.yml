@@ -1,6 +1,6 @@
 version: "2"
 services:
-  node1:
+  node_oauth:
     image: "node:8"
     user: "node"
     working_dir: /home/node/app
@@ -12,6 +12,36 @@ services:
       - "8888:8080"
     expose:
       - 8888
+    command: "npm start"
+  
+  node_map:
+    image: "node:8"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./app_server:/home/node/app
+    ports:
+      - "8080:8081"
+    expose:
+      - 8080
     command: "npm start"    
+
+  node_chat:
+    image: "node:8"
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+    volumes:
+      - ./chat:/home/node/app
+    ports:
+      - "8000:8000"
+    expose:
+      - 8000
+    command: "npm start"  
+  
+
     
   
