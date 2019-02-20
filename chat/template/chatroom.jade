@@ -1,13 +1,14 @@
 doctype html
 html
   head
+    link(rel='stylesheet', href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css")
     title ChatRoom
     script(src='/chat.js')
     script(src='/socket.io/socket.io.js')
   body
-    #content(style='width: 500px; height: 300px; margin: 0 0 20px 0; border: solid 1px #999; overflow-y: auto;')
+    #content(style='width: 600px; height: 600px;  border: solid 1px #999; overflow-y:auto;')
     .controls
       input#field(style='width: 350px;')
-      input#send(type='button', value='send' onclick="document.getElementById('content').scrollTop = document.getElementById('content').scrollHeight; console.log('click');")
-      input#map(type='button', value='logout' onclick="window.location.href = \"http://localhost:8080\";")
+      input#send(type='button', class="btn btn-primary" style="border-radius: 10px;", value='send' onclick="document.getElementById('content').scrollTop = document.getElementById('content').scrollHeight; console.log('click');")
+      input#map(type='button', class="btn btn-primary" style="border-radius: 10px;", value='logout' onclick="window.location.href = \"http://localhost:8080\";")
        
