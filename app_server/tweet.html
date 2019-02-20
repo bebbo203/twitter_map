@@ -1,23 +1,25 @@
 <html lang="en" >
 <head>
-    <meta charset="UTF-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" >
     <title style="font-style:italic ">TWITTER MAP</title>
+    <style>
+        body {
+            background-image: url("https://acquadolomia.it/sites/default/files/planisfero.jpg");
+        }
+    </style>
 </head>
-<body background="sfondo.jpg">
-     <h1 style="margin-left: 40% ; margin-top: 10% color: rgb(2, 56, 87);"> TWITTER MAP </h1>
+<body>
+     <h1 style="margin-left: 40% ; margin-top: 4% ; color: darkblue"> TWITTER MAP </h1>
     <form action="/click" method="POST">
         <div class="form-group mb-2" style="width: 300px; margin-left: 40% ; margin-top: 8%">
-            <label style="color: rgb(2, 56, 87); font-family: helvetica,sans-serif">QUALE HASHTAG VUOI MAPPARE?</label>
+            <label style="color:darkblue; font-family: helvetica,sans-serif">QUALE HASHTAG VUOI MAPPARE?</label>
             <input type="text" name="dname" class="form-control" placeholder="inserire l'hastag"> </br>
             <button type="submit" class="btn btn-primary" style="border-radius: 10px;"> SEARCH</button>
         </div>
-       <!-- <label>HASHTAG: </label>
-        <input type="text" name="dname" value="" class="form-control" placeholder="inserisci l'hastag" width="5"/><br />-->
-       
+      
     </form>
     <form action="http://172.28.1.1:8888/sessions/connect" method="GET">
-        <label style="color: rgb(2, 56, 87); font-family: helvetica,sans-serif; margin-left: 40% ; margin-top:  10%">CRECA TRAMITE IL BOT </label>
+        <label style="color: darkblue; font-family: helvetica,sans-serif; margin-left: 40% ; margin-top:  8%">CRECA TRAMITE IL BOT </label>
     </br>
         <button type="submit" class="btn btn-primary" style="border-radius: 10px; margin-left: 40%;"> TWITTER </button>
     </form>
