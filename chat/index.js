@@ -7,8 +7,16 @@ app.set('views', __dirname + '/template');
 app.set('view engine', 'jade');
 app.engine('jade', require('jade').__express);
 app.use(express.static(__dirname + '/assets'));
+
+
+
+var name = "";
+
+
 app.get("/", function(req,res){
-  res.render("chatroom");
+  name = req.param("name");
+  res.render("chatroom.jade");
+  
 });
 
 
@@ -16,7 +24,7 @@ var io = require('socket.io').listen(app.listen(8000));
 console.log("Listening on port 8000");
 
 io.sockets.on('connection', function (socket) {
-  socket.emit('message', { message: 'Benvenuto in chat' });
+  socket.emit('message', { message: 'Benvenuto in chat '+name+"!" });
   socket.on('send', function (data) {
 
     var risposta = "";
@@ -24,7 +32,7 @@ io.sockets.on('connection', function (socket) {
     var data = "";
     var bird = "&#x270F"
 
-    var url = "http://172.28.1.2:8081/chat?chat_query="+text;
+    var url = "http://172.28.1.2:8080/chat?chat_query="+text;
     console.log("URL:"+url)
     http.get(url, (resp) => {
       
@@ -46,7 +54,7 @@ io.sockets.on('connection', function (socket) {
 
           for(var i=0;i<tweets.length;i++)
           {
-              io.sockets.emit('message', {message: bird+tweets[i]});
+              io.sockets.emit('message', {message: bird+" "+tweets[i]});
           }
 
 

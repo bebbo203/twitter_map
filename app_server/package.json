@@ -7,7 +7,9 @@
     "express": "^4.14.0",
     "twitter": "latest",
     "nodemon": "latest",
-    "request": "latest"
+    "request": "latest",
+    "uuid": "latest",
+    "express-session": "latest"
   },
   "devDependencies": {},
   "scripts": {

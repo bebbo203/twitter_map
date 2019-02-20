@@ -10,11 +10,12 @@
     "express-logger": "0.0.3",
     "express-session": "^1.14.1",
     "oauth": "^0.9.14",
-    "util-inspect": "^0.1.8"
-    
+    "util-inspect": "^0.1.8",
+    "nodemon": "latest",
+    "uuid": "latest"
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node oauth_twitter.js"
+    "start": "npm install && nodemon oauth_twitter.js"
   }
 }

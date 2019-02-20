@@ -12,7 +12,7 @@ services:
     volumes:
       - ./oauth_server:/home/node/app
     ports:
-      - "8888:8080"
+      - "8888:8888"
     expose:
       - 8888
     command: "npm start"
@@ -29,7 +29,7 @@ services:
     volumes:
       - ./app_server:/home/node/app
     ports:
-      - "8080:8081"
+      - "8080:8080"
     expose:
       - 8080
     command: "npm start"    
