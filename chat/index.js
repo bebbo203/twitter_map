@@ -19,10 +19,14 @@ io.sockets.on('connection', function (socket) {
   socket.emit('message', { message: 'Benvenuto in chat' });
   socket.on('send', function (data) {
 
+    var risposta = "";
     var text = data.message;
     var data = "";
+    var bird = "&#x270F"
 
-    http.get("http://172.19.0.4:8081/click?chat_param="+text, (resp) => {
+    var url = "http://172.28.1.2:8081/chat?chat_query="+text;
+    console.log("URL:"+url)
+    http.get(url, (resp) => {
       
        console.log("START");
         data = "";
@@ -35,17 +39,21 @@ io.sockets.on('connection', function (socket) {
         resp.on('end', () => {
 
           var tweets = JSON.parse(data);
-          var risposta = "------->";
-          for(var i=0;i<tweets.length;tweets++)
+          console.log("LENGTH: "+tweets.length);
+
+          io.sockets.emit('message', {message: "Ho trovato "+tweets.length+" tweet con l'hashtag #"+text+":"});
+
+
+          for(var i=0;i<tweets.length;i++)
           {
-              risposta += tweets[i]+"\n";
+              io.sockets.emit('message', {message: bird+tweets[i]});
           }
 
 
 
-          io.sockets.emit('message', {message: risposta});
+            
 
-            console.log(data);
+            console.log("FINEEE");
         });
 
     }).on("error", (err) => {

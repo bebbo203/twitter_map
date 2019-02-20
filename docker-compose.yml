@@ -2,6 +2,9 @@ version: "2"
 services:
   node_oauth:
     image: "node:8"
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.1
     user: "node"
     working_dir: /home/node/app
     environment:
@@ -16,6 +19,9 @@ services:
   
   node_map:
     image: "node:8"
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.2
     user: "node"
     working_dir: /home/node/app
     environment:
@@ -30,6 +36,9 @@ services:
 
   node_chat:
     image: "node:8"
+    networks:
+      testing_net:
+        ipv4_address: 172.28.1.3
     user: "node"
     working_dir: /home/node/app
     environment:
@@ -41,6 +50,13 @@ services:
     expose:
       - 8000
     command: "npm start"  
+
+networks:
+  testing_net:
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.28.0.0/16
   
 
     

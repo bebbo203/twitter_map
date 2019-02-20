@@ -32,7 +32,7 @@ app.get('/',function(req, res)
     
 });
 
-app.get('/click',function(req, res)
+app.post('/click',function(req, res)
 {
 
     console.log("IN");
@@ -40,11 +40,7 @@ app.get('/click',function(req, res)
     locations = []
     coords = []
     tweet_print = []
-    var param = req.param("chat_param");
-    if(param != null)
-        text_form = param;
-    else
-        text_form = req.body.dname;
+    text_form = req.body.dname;
 
     console.log(text_form);
 
@@ -88,10 +84,7 @@ app.get('/click',function(req, res)
             }
 
             console.log(coords);
-            if(param==null)
-                res.redirect("/map");
-            else
-                res.send(JSON.stringify(tweet_print));
+            res.redirect("/map");
         }
         else
         {
@@ -101,6 +94,42 @@ app.get('/click',function(req, res)
     });
 
     
+
+});
+
+app.get('/chat', function(req, res){
+
+    var query = req.param('chat_query');
+    var ret = [];
+    
+    var params = {
+        q: '%23'+query,
+        count: '5'
+        };
+
+    console.log("IL PARAMETRO: "+query);
+    client.get('search/tweets', params, function(error, tweets, response) 
+    {
+
+        if(error)
+            res.send("C'è stato un errore");
+        else
+        {
+            var tweets_stringified = JSON.stringify(tweets);
+            var tweets_parsed = JSON.parse(tweets_stringified);
+
+            for(var i=0;i<tweets_parsed.statuses.length;i++)
+            {
+                ret.push(tweets_parsed.statuses[i].text)
+            }
+
+            res.send(JSON.stringify(ret));
+            ret = []
+        }
+
+    });
+
+
 
 });
 
