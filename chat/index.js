@@ -21,18 +21,21 @@ app.get("/", function(req,res){
 
 
 var io = require('socket.io').listen(app.listen(8000));
-console.log("Listening on port 8000");
+console.log("Chat ready and listening on port 8000");
 
 io.sockets.on('connection', function (socket) {
   socket.emit('message', { message: 'Benvenuto in chat '+name+"!" });
   socket.on('send', function (data) {
+
+    if(data.message == "") return;
+
 
     var risposta = "";
     var text = data.message;
     var data = "";
     var bird = "&#x270F"
 
-    var url = "http://172.28.1.2:8080/chat?chat_query="+text;
+    var url = "http://172.28.1.2:8080/last_tweets?N=5&hashtag="+text;
     console.log("URL:"+url)
     http.get(url, (resp) => {
       
@@ -70,7 +73,6 @@ io.sockets.on('connection', function (socket) {
 
 
 
-    //io.sockets.emit('message', {message: data});
   });
 });
 
