@@ -1,15 +1,22 @@
-<html lang="en">
+<html lang="en" >
 <head>
-  
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" >
 </head>
-<body>
+<body background="sfondo.jpg">
     <form action="/click" method="POST">
-        <label>HASHTAG: </label>
-        <input type="text" name="dname" value="" /><br />
-        <button type="submit"> SEARCH</button>
+        <div class="form-group mb-2" style="width: 300px; margin-left: 40% ; margin-top: 10%">
+            <label style="color: rgb(2, 56, 87); font-family: helvetica,sans-serif">QUALE HASHTAG VUOI MAPPARE?</label>
+            <input type="text" name="dname" class="form-control" placeholder="inserire l'hastag"> </br>
+            <button type="submit" class="btn btn-primary" style="border-radius: 10px;"> SEARCH</button>
+        </div>
+       <!-- <label>HASHTAG: </label>
+        <input type="text" name="dname" value="" class="form-control" placeholder="inserisci l'hastag" width="5"/><br />-->
+       
     </form>
     <form action="http://172.28.1.1:8888/sessions/connect" method="GET">
-        <button type="submit"> TWITTER </button>
+        <label style="color: rgb(2, 56, 87); font-family: helvetica,sans-serif; margin-left: 40% ; margin-top:  10%">CRECA TRAMITE IL BOT </label>
+    </br>
+        <button type="submit" class="btn btn-primary" style="border-radius: 10px; margin-left: 40%;"> TWITTER </button>
     </form>
 </body>
 </html>
